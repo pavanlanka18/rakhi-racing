@@ -1,5 +1,46 @@
 import type { Product } from '@/types';
 
+const FIRST_EDIT_F1_NUMBERS = new Set([2, 18, 22, 23, 25, 36, 44]);
+
+const FIRST_EDIT_PRODUCTS: Product[] = Array.from({ length: 50 }, (_, index) => {
+  const number = index + 1;
+  const padded = String(number).padStart(2, '0');
+  const isFormulaOne = FIRST_EDIT_F1_NUMBERS.has(number);
+  const productType = isFormulaOne ? 'Formula 1 Car Rakhi' : 'Hot Wheels Fantasy Rakhi';
+
+  return {
+    id: `p_first_edit_${padded}`,
+    slug: `first-edit-rakhi-${padded}`,
+    name: `${productType} ${padded}`,
+    liveryNumber: 100 + number,
+    editionSize: isFormulaOne ? 25 : 50,
+    editionNumber: number,
+    price: isFormulaOne ? 699 : 499,
+    originalPrice: isFormulaOne ? 899 : 649,
+    currency: 'INR',
+    description: {
+      short: isFormulaOne
+        ? 'Premium Formula 1 car rakhi from the 1st edit photo collection.'
+        : 'Hot Wheels fantasy rakhi from the 1st edit photo collection.',
+      long: isFormulaOne
+        ? 'A premium Formula 1 car rakhi from the 1st edit photo collection, ready for Raksha Bandhan gifting. Each piece is presented as its own shop item so customers can choose the exact rakhi shown in the photo.'
+        : 'A Hot Wheels fantasy rakhi from the 1st edit photo collection, ready for Raksha Bandhan gifting. Each piece is presented as its own shop item so customers can choose the exact rakhi shown in the photo.',
+    },
+    images: [`/images/products/1st-edit/rakhi-edit-${padded}.png`],
+    category: isFormulaOne ? 'f1' : 'muscle',
+    tags: isFormulaOne ? ['formula-1', 'premium', 'rakhi'] : ['hot-wheels', 'muscle', 'rakhi'],
+    specs: {
+      thread: 'Hand-tied festive thread',
+      metal: isFormulaOne ? 'Formula 1 die-cast car' : 'Hot Wheels die-cast car',
+      charm: 'As shown in product photo',
+      weight: 'Varies by design',
+      dimensions: 'Standard rakhi size',
+    },
+    inventory: 1,
+    isActive: true,
+  };
+});
+
 export const PRODUCTS: Product[] = [
   {
     id: 'p_f1_001',
@@ -298,4 +339,5 @@ export const PRODUCTS: Product[] = [
     inventory: 100,
     isActive: true,
   },
+  ...FIRST_EDIT_PRODUCTS,
 ];

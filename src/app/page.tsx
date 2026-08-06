@@ -1,5 +1,5 @@
 import { Hero } from '@/components/home/Hero';
-import { FeaturedCollection } from '@/components/home/FeaturedCollection';
+import { RakhiDisplaySections } from '@/components/home/RakhiDisplaySections';
 import { CraftStory } from '@/components/home/CraftStory';
 import { Testimonials } from '@/components/home/Testimonials';
 import Link from 'next/link';
@@ -9,7 +9,7 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <FeaturedCollection />
+      <RakhiDisplaySections />
       <CraftStory />
       <Testimonials />
 

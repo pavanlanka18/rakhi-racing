@@ -12,10 +12,12 @@ type Props = {
 
 const CATEGORY_LABELS: Record<string, string> = {
   f1: 'F1 Edition',
+  muscle: 'Muscle Car',
   sports: 'Sports Car',
   adventure: 'Adventure',
   limited: 'Limited',
   bond: 'Bond Rakhi',
+  'first-edit': '1st Edit',
   sport: 'Sport',
   cafe: 'Café',
   classic: 'Classic',
@@ -25,10 +27,12 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 const CATEGORY_COLORS: Record<string, string> = {
   f1: 'bg-blue-600/20 text-blue-300 border-blue-500/30',
+  muscle: 'bg-vermillion-500/20 text-vermillion-400 border-vermillion-500/30',
   sports: 'bg-vermillion-500/20 text-vermillion-400 border-vermillion-500/30',
   adventure: 'bg-green-600/20 text-green-300 border-green-500/30',
   limited: 'bg-mauli-500/20 text-mauli-400 border-mauli-500/30',
   bond: 'bg-purple-600/20 text-purple-300 border-purple-500/30',
+  'first-edit': 'bg-mauli-500/20 text-mauli-400 border-mauli-500/30',
 };
 
 export function ProductCard({ product }: Props) {
@@ -116,9 +120,14 @@ export function ProductCard({ product }: Props) {
               {formatINR(product.price)}
             </span>
             {product.originalPrice && (
-              <span className="font-mono text-[11px] text-ivory/40 line-through">
-                {formatINR(product.originalPrice)}
-              </span>
+              <>
+                <span className="font-mono text-[11px] text-ivory/40 line-through">
+                  {formatINR(product.originalPrice)}
+                </span>
+                <span className="mt-0.5 font-mono text-[10px] uppercase tracking-wide text-mauli-400">
+                  Save {formatINR(product.originalPrice - product.price)} ({discount}% OFF)
+                </span>
+              </>
             )}
           </div>
           {!product.isSoldOut && <AddToCartButton product={product} size="sm" />}
