@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { PRODUCTS } from '@/lib/fixtures/products';
 import { ProductCard } from '@/components/product/ProductCard';
 import { Search, SlidersHorizontal, X, ChevronDown } from 'lucide-react';
@@ -21,11 +22,19 @@ const SORT_OPTIONS = [
   { value: 'discount', label: 'Biggest Discount' },
 ];
 
-export default function ShopPage() {
+function ShopContent() {
+  const searchParams = useSearchParams();
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
   const [sort, setSort] = useState('featured');
   const [showFilters, setShowFilters] = useState(false);
+
+  // Sync category from URL ?cat= param
+  useEffect(() => {
+    const cat = searchParams.get('cat');
+    const valid = CATEGORIES.map((c) => c.value);
+    setActiveCategory(cat && valid.includes(cat) ? cat : 'all');
+  }, [searchParams]);
 
   const filtered = useMemo(() => {
     let list = [...PRODUCTS];
@@ -112,8 +121,8 @@ export default function ShopPage() {
         </div>
       </div>
 
-      {/* Sticky Filter Bar */}
-      <div className="sticky top-0 z-30 bg-circuit-900/95 backdrop-blur border-b border-circuit-700 shadow-lg">
+      {/* Sticky Filter Bar — sits below the 72px navbar */}
+      <div className="sticky top-[72px] z-30 bg-circuit-900/95 backdrop-blur border-b border-circuit-700 shadow-lg">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
             {/* Search */}
@@ -234,5 +243,13 @@ export default function ShopPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function ShopPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-circuit-900" />}>
+      <ShopContent />
+    </Suspense>
   );
 }

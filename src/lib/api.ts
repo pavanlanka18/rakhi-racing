@@ -11,7 +11,7 @@ export async function fetchProducts(): Promise<Product[]> {
   if (!API_URL) return PRODUCTS;
 
   try {
-    const res = await fetch(`${API_URL}/products`, { cache: 'no-store' });
+    const res = await fetch(`${API_URL}/products`);
     if (!res.ok) return PRODUCTS;
     const json = await res.json();
     return (json?.data ?? PRODUCTS) as Product[];
@@ -25,7 +25,7 @@ export async function fetchProductBySlug(slug: string): Promise<Product | null> 
     return PRODUCTS.find((p) => p.slug === slug) ?? null;
   }
   try {
-    const res = await fetch(`${API_URL}/products/${slug}`, { cache: 'no-store' });
+    const res = await fetch(`${API_URL}/products/${slug}`);
     if (!res.ok) return null;
     const json = await res.json();
     return (json?.data ?? null) as Product | null;

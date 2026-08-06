@@ -1,12 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { formatINR } from '@/lib/utils';
 import type { Order } from '@/types';
 
-export default function OrdersPage() {
+function OrdersContent() {
   const search = useSearchParams();
   const justPlaced = search.get('placed') === '1';
   const [orders, setOrders] = useState<Order[] | null>(null);
@@ -98,5 +98,13 @@ export default function OrdersPage() {
         )}
       </div>
     </section>
+  );
+}
+
+export default function OrdersPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-circuit-900" />}>
+      <OrdersContent />
+    </Suspense>
   );
 }

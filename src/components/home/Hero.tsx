@@ -143,10 +143,11 @@ function CountdownBlock({ label, value }: { label: string; value: number }) {
 }
 
 /* ─── Hero ──────────────────────────────────────────────────────────────── */
+const RAKSHA_BANDHAN = new Date('2026-08-29T00:00:00+05:30');
+
 export function Hero() {
   const { add } = useCart();
   const flagship = PRODUCTS[0];
-  const RAKSHA_BANDHAN = new Date('2026-08-29T00:00:00+05:30');
   const countdown = useCountdown(RAKSHA_BANDHAN);
 
   const containerVariants = {

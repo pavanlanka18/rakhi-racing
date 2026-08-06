@@ -9,9 +9,9 @@ import { cn } from '@/lib/utils';
 
 const links = [
   { href: '/shop', label: 'Shop' },
-  { href: '/shop?cat=sport', label: 'Story' },
-  { href: '/shop?cat=cafe', label: 'Journal' },
-  { href: '/shop?cat=classic', label: 'Atelier' },
+  { href: '/shop?cat=f1', label: 'F1 Edition' },
+  { href: '/shop?cat=limited', label: 'Limited' },
+  { href: '/shop?cat=bond', label: 'Bond' },
 ];
 
 export function Navbar() {

@@ -36,10 +36,11 @@ export function Footer() {
           </h4>
           <ul className="space-y-2 text-sm">
             <li><Link href="/shop" className="text-ivory/80 hover:text-mauli-500">All liveries</Link></li>
-            <li><Link href="/shop?cat=sport" className="text-ivory/80 hover:text-mauli-500">Sport</Link></li>
-            <li><Link href="/shop?cat=cafe" className="text-ivory/80 hover:text-mauli-500">Café</Link></li>
-            <li><Link href="/shop?cat=classic" className="text-ivory/80 hover:text-mauli-500">Classic</Link></li>
-            <li><Link href="/shop?cat=limited" className="text-ivory/80 hover:text-mauli-500">Limited</Link></li>
+            <li><Link href="/shop?cat=f1" className="text-ivory/80 hover:text-mauli-500">F1 Edition</Link></li>
+            <li><Link href="/shop?cat=sports" className="text-ivory/80 hover:text-mauli-500">Sports Cars</Link></li>
+            <li><Link href="/shop?cat=adventure" className="text-ivory/80 hover:text-mauli-500">Adventure</Link></li>
+            <li><Link href="/shop?cat=limited" className="text-ivory/80 hover:text-mauli-500">Limited Edition</Link></li>
+            <li><Link href="/shop?cat=bond" className="text-ivory/80 hover:text-mauli-500">Bond Rakhi</Link></li>
           </ul>
         </div>
 
