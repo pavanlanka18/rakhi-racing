@@ -3,18 +3,17 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
-  workflow_dispatch: # allow manual runs from the Actions tab
+  workflow_dispatch:
 
-# Allow the workflow to write to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Only one deployment at a time; cancel in-progress runs
+# Only one concurrent deployment; do NOT cancel in-progress so production deploys complete
 concurrency:
-  group: pages
-  cancel-in-progress: true
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -32,14 +31,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
       - name: Build (static export)
         run: npm run build
         env:
           NODE_ENV: production
-
-      - name: Add .nojekyll
-        # Prevents GitHub Pages' Jekyll processor from ignoring _next/ folder
-        run: touch out/.nojekyll
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
