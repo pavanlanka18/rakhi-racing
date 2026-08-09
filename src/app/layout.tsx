@@ -29,11 +29,11 @@ const plexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Rakhi Racing — Rakhis built like race engines',
-    template: '%s · Rakhi Racing',
+    default: 'Rakhi Wheels — Premium Die-Cast Rakhis',
+    template: '%s · Rakhi Wheels',
   },
   description:
-    'A limited collector series of die-cast motorcycles with the rakhi thread tied around the front wheel hub. Edition 047/500.',
+    'Premium Hot Wheels die-cast rakhis handcrafted for Raksha Bandhan. F1 cars, classic muscle, and fantasy designs with the mauli thread tied around the front wheel hub.',
   metadataBase: new URL('http://localhost:3000'),
 };
 

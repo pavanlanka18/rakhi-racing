@@ -1,17 +1,18 @@
 'use client';
 
 import Link from 'next/link';
-import { ShoppingBag, User, Search, Menu } from 'lucide-react';
+import Image from 'next/image';
+import { ShoppingBag, User, Menu } from 'lucide-react';
 import { useCart } from '@/hooks/useCart';
 import { useState } from 'react';
 import { MobileMenu } from './MobileMenu';
 import { cn } from '@/lib/utils';
 
 const links = [
-  { href: '/shop', label: 'Shop' },
-  { href: '/shop?cat=f1', label: 'F1 Edition' },
-  { href: '/shop?cat=limited', label: 'Limited' },
-  { href: '/shop?cat=bond', label: 'Bond' },
+  { href: '/shop',             label: 'Shop' },
+  { href: '/shop?cat=f1',      label: 'F1 Cars' },
+  { href: '/shop?cat=classic', label: 'Classic' },
+  { href: '/shop?cat=bond',    label: 'Bond' },
 ];
 
 export function Navbar() {
@@ -20,24 +21,34 @@ export function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-circuit-700 bg-circuit-900/85 backdrop-blur supports-[backdrop-filter]:bg-circuit-900/70">
+      <header className="sticky top-0 z-40 border-b border-circuit-700 bg-circuit-900/90 backdrop-blur supports-[backdrop-filter]:bg-circuit-900/75">
         <div className="max-w-7xl mx-auto px-6 h-[72px] flex items-center justify-between">
-          {/* Logo — livery placard style */}
-          <Link href="/" className="flex items-center gap-3 group focus-ring rounded-sm">
-            <div className="placard px-2.5 py-1.5 leading-none text-chrome-200 group-hover:border-mauli-500 group-hover:text-mauli-500 transition-colors">
-              047
+
+          {/* ── Logo ───────────────────────────────────────────────── */}
+          <Link href="/" className="flex items-center gap-3 group focus-ring rounded-lg">
+            {/* Logo image */}
+            <div className="relative w-10 h-10 flex-shrink-0 rounded-full overflow-hidden ring-1 ring-circuit-600 group-hover:ring-mauli-500 transition-all duration-200">
+              <Image
+                src="/images/brand/logo.png"
+                alt="Rakhi Wheels logo"
+                fill
+                className="object-cover"
+                sizes="40px"
+                priority
+              />
             </div>
+            {/* Brand name */}
             <div className="flex flex-col leading-none">
-              <span className="font-display text-lg uppercase tracking-[0.2em] text-ivory">
+              <span className="font-display text-base uppercase tracking-[0.22em] text-ivory group-hover:text-ivory transition-colors">
                 Rakhi
               </span>
-              <span className="font-display text-lg uppercase tracking-[0.2em] text-mauli-500 -mt-0.5">
-                Racing
+              <span className="font-display text-base uppercase tracking-[0.22em] text-mauli-500 -mt-0.5 group-hover:text-mauli-400 transition-colors">
+                Wheels
               </span>
             </div>
           </Link>
 
-          {/* Center nav */}
+          {/* ── Center nav ─────────────────────────────────────────── */}
           <nav className="hidden md:flex items-center gap-8">
             {links.map((l) => (
               <Link key={l.href} href={l.href} className="nav-link focus-ring rounded-sm">
@@ -46,15 +57,8 @@ export function Navbar() {
             ))}
           </nav>
 
-          {/* Right cluster */}
+          {/* ── Right cluster ──────────────────────────────────────── */}
           <div className="flex items-center gap-2">
-            <button
-              type="button"
-              aria-label="Search"
-              className="hidden sm:inline-flex p-2 text-ivory/70 hover:text-ivory transition focus-ring rounded-sm"
-            >
-              <Search className="w-4 h-4" />
-            </button>
             <Link
               href="/account"
               aria-label="Account"
@@ -96,3 +100,4 @@ export function Navbar() {
     </>
   );
 }
+
