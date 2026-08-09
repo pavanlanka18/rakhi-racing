@@ -55,8 +55,6 @@ export function Footer() {
             Help
           </h4>
           <ul className="space-y-2 text-sm">
-            <li><Link href="/account" className="text-ivory/80 hover:text-mauli-500">Account</Link></li>
-            <li><Link href="/account/orders" className="text-ivory/80 hover:text-mauli-500">Orders</Link></li>
             <li><Link href="/cart" className="text-ivory/80 hover:text-mauli-500">Cart</Link></li>
             <li><a href="#" className="text-ivory/80 hover:text-mauli-500">Shipping & returns</a></li>
             <li><a href="#" className="text-ivory/80 hover:text-mauli-500">Care guide</a></li>

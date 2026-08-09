@@ -11,19 +11,19 @@ export function CraftStory() {
           </h2>
           <div className="mt-6 space-y-4 text-ivory/75 font-body max-w-xl">
             <p>
-              Every Rakhi Racing livery starts as a CNC-milled die-cast zinc body,
-              polished, then masked and sprayed in our Pune atelier. The fairing
-              carries the livery number; the tank carries the line.
+              Every Rakhi Wheels edition starts with a genuine 1:64 scale die-cast
+              model, carefully inspected and prepared in our Pune atelier. The chassis
+              carries the heritage; the livery tells the story.
             </p>
             <p>
-              The rakhi itself is 9-ply silk — vermillion for the sport and street
-              liveries, mauli-gold for the classic and tour. It is tied around
+              The rakhi itself is 9-ply silk — vermillion for the F1 and sports
+              editions, mauli-gold for the classics. It is tied around
               the front wheel hub by hand, exactly the way it would sit on a
               wrist. A small kalava drop in mauli-gold finishes the piece.
             </p>
             <p>
-              Each one is numbered, signed, and shipped in a chrome-edged case
-              with an atelier card. 500 pieces per livery. No reprints.
+              Each one is hand-numbered, signed, and shipped in a premium display case
+              with an authenticity card. 500 pieces per livery. No reprints.
             </p>
           </div>
 
@@ -54,52 +54,98 @@ function Stat({ label, value }: { label: string; value: string }) {
   );
 }
 
-// Technical drawing of a wheel with a rakhi and dimension callouts
+// Technical drawing of an alloy wheel with a rakhi and dimension callouts
 function Blueprint() {
   return (
     <svg
       viewBox="0 0 400 400"
       className="w-full h-full"
       role="img"
-      aria-label="Technical drawing of a wheel with a rakhi tied around the hub"
+      aria-label="Technical drawing of an alloy wheel with a rakhi tied around the hub"
     >
       <defs>
         <pattern id="bpGrid" width="20" height="20" patternUnits="userSpaceOnUse">
           <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1E3D2F" strokeWidth="0.5" />
         </pattern>
+        <style>{`
+          @keyframes spin-slow {
+            100% { transform: rotate(360deg); }
+          }
+          @keyframes spin-reverse {
+            100% { transform: rotate(-360deg); }
+          }
+          @keyframes shimmer {
+            100% { stroke-dashoffset: -20; }
+          }
+          @keyframes pulse-opacity {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+          }
+          .wheel-spin {
+            animation: spin-slow 45s linear infinite;
+            transform-origin: 200px 200px;
+          }
+          .disc-spin {
+            animation: spin-reverse 60s linear infinite;
+            transform-origin: 200px 200px;
+          }
+          .thread-shimmer {
+            animation: shimmer 1.5s linear infinite;
+          }
+          .pulse-slow {
+            animation: pulse-opacity 3s ease-in-out infinite;
+          }
+        `}</style>
       </defs>
       <rect width="400" height="400" fill="url(#bpGrid)" />
 
-      {/* Wheel */}
+      {/* Wheel Assembly */}
       <g
         fill="none"
-        stroke="#D4A24A"
-        strokeWidth="1.4"
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <circle cx="200" cy="200" r="140" />
-        <circle cx="200" cy="200" r="118" />
-        <circle cx="200" cy="200" r="34" />
-        {/* Spokes */}
-        {Array.from({ length: 12 }).map((_, i) => {
-          const a = (i / 12) * Math.PI * 2;
-          return (
-            <line
-              key={i}
-              x1={200 + Math.cos(a) * 36}
-              y1={200 + Math.sin(a) * 36}
-              x2={200 + Math.cos(a) * 116}
-              y2={200 + Math.sin(a) * 116}
-              stroke="#9AA1A8"
-              strokeWidth="0.8"
-            />
-          );
-        })}
-        {/* Rakhi threads on hub */}
-        <circle cx="200" cy="200" r="38" stroke="#C8341F" strokeWidth="1.4" strokeDasharray="3 2" />
-        <circle cx="200" cy="200" r="44" stroke="#C8341F" strokeWidth="1.4" strokeDasharray="3 2" />
-        <circle cx="200" cy="200" r="50" stroke="#D4A24A" strokeWidth="1.2" />
+        <g className="wheel-spin">
+          {/* Tire Outer */}
+          <circle cx="200" cy="200" r="150" stroke="#D4A24A" strokeWidth="1.5" />
+          <circle cx="200" cy="200" r="146" stroke="#D4A24A" strokeWidth="0.5" strokeDasharray="4 4" className="thread-shimmer" />
+          
+          {/* Rim Outer */}
+          <circle cx="200" cy="200" r="115" stroke="#9AA1A8" strokeWidth="2" />
+          {/* Rim Inner */}
+          <circle cx="200" cy="200" r="95" stroke="#9AA1A8" strokeWidth="1" />
+          
+          {/* 5 Spokes */}
+          {Array.from({ length: 5 }).map((_, i) => {
+            return (
+              <g key={i} transform={`rotate(${(i * 360) / 5}, 200, 200)`}>
+                <path d="M 186 172 Q 192 140 180 95 L 220 95 Q 208 140 214 172" stroke="#9AA1A8" strokeWidth="1.5" />
+                {/* Spoke center detail line */}
+                <line x1="200" y1="172" x2="200" y2="95" stroke="#4A5568" strokeWidth="0.8" />
+              </g>
+            );
+          })}
+        </g>
+
+        {/* Brake Disc (Rotates independently for parallax effect) */}
+        <g className="disc-spin">
+          <circle cx="200" cy="200" r="75" stroke="#4A5568" strokeWidth="12" strokeDasharray="2 6" />
+          <circle cx="200" cy="200" r="69" stroke="#4A5568" strokeWidth="0.5" />
+          <circle cx="200" cy="200" r="81" stroke="#4A5568" strokeWidth="0.5" />
+        </g>
+
+        {/* Hub Center (Stationary) */}
+        <circle cx="200" cy="200" r="28" stroke="#D4A24A" strokeWidth="1.5" />
+        <circle cx="200" cy="200" r="12" stroke="#D4A24A" strokeWidth="1" />
+        
+        {/* Rakhi threads on hub (Stationary with shimmer) */}
+        <circle cx="200" cy="200" r="34" stroke="#C8341F" strokeWidth="1.8" strokeDasharray="4 3" className="thread-shimmer" />
+        <circle cx="200" cy="200" r="39" stroke="#C8341F" strokeWidth="1.8" strokeDasharray="4 3" className="thread-shimmer" />
+        <circle cx="200" cy="200" r="44" stroke="#D4A24A" strokeWidth="1.2" />
+        
+        {/* Thread drop/kalava (Stationary) */}
+        <path d="M 200 244 Q 195 260 210 280" stroke="#C8341F" strokeWidth="1.8" className="pulse-slow" />
+        <path d="M 200 244 Q 210 270 195 290" stroke="#C8341F" strokeWidth="1.8" className="pulse-slow" />
       </g>
 
       {/* Dimension callouts */}
@@ -108,22 +154,24 @@ function Blueprint() {
         fontFamily="var(--font-plex-mono), monospace"
         fontSize="9"
         letterSpacing="1.2"
+        className="pulse-slow"
       >
         {/* Diameter callout */}
-        <line x1="60" y1="200" x2="60" y2="60" stroke="#9AA1A8" strokeWidth="0.6" />
-        <line x1="55" y1="200" x2="65" y2="200" stroke="#9AA1A8" strokeWidth="0.6" />
-        <line x1="55" y1="60" x2="65" y2="60" stroke="#9AA1A8" strokeWidth="0.6" />
-        <text x="72" y="130" fill="#D4A24A">Ø 280 mm</text>
+        <line x1="40" y1="200" x2="40" y2="50" stroke="#9AA1A8" strokeWidth="0.6" />
+        <line x1="35" y1="200" x2="45" y2="200" stroke="#9AA1A8" strokeWidth="0.6" />
+        <line x1="35" y1="50" x2="45" y2="50" stroke="#9AA1A8" strokeWidth="0.6" />
+        <text x="50" y="125" fill="#D4A24A">Ø 11.5 mm</text>
+        <text x="50" y="140" fill="#9AA1A8">SCALE 1:64</text>
 
         {/* Hub callout */}
-        <line x1="200" y1="200" x2="200" y2="50" stroke="#9AA1A8" strokeWidth="0.4" strokeDasharray="2 2" />
-        <line x1="160" y1="50" x2="240" y2="50" stroke="#9AA1A8" strokeWidth="0.6" />
-        <text x="245" y="54">HUB · Ø 34</text>
+        <line x1="200" y1="200" x2="200" y2="35" stroke="#9AA1A8" strokeWidth="0.4" strokeDasharray="2 2" />
+        <line x1="160" y1="35" x2="240" y2="35" stroke="#9AA1A8" strokeWidth="0.6" />
+        <text x="245" y="39">AXLE · Ø 1.2 mm</text>
 
         {/* Thread callout */}
-        <line x1="200" y1="200" x2="200" y2="370" stroke="#9AA1A8" strokeWidth="0.4" strokeDasharray="2 2" />
-        <line x1="170" y1="370" x2="240" y2="370" stroke="#9AA1A8" strokeWidth="0.6" />
-        <text x="246" y="374" fill="#C8341F">RAKHI · 9-PLY</text>
+        <line x1="200" y1="200" x2="200" y2="365" stroke="#9AA1A8" strokeWidth="0.4" strokeDasharray="2 2" />
+        <line x1="160" y1="365" x2="240" y2="365" stroke="#9AA1A8" strokeWidth="0.6" />
+        <text x="246" y="369" fill="#C8341F">RAKHI · SILK</text>
       </g>
 
       {/* Corner plaque */}
@@ -146,7 +194,7 @@ function Blueprint() {
           fontSize="9"
           letterSpacing="2"
         >
-          GARAGE ZERO · 01
+          PROJECT · 64
         </text>
       </g>
       <g>

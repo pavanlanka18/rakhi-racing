@@ -75,13 +75,6 @@ export function MobileMenu({ open, onClose, links }: Props) {
               ))}
               <div className="mt-6 pt-6 border-t border-circuit-700 flex flex-col gap-3">
                 <Link
-                  href="/account"
-                  onClick={onClose}
-                  className="nav-link"
-                >
-                  Account
-                </Link>
-                <Link
                   href="/cart"
                   onClick={onClose}
                   className="nav-link"

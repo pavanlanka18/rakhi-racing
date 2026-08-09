@@ -16,7 +16,6 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import { AddToCartButton } from '@/components/product/AddToCartButton';
 import { PRODUCTS } from '@/lib/fixtures/products';
-import { formatINR } from '@/lib/utils';
 
 const RAKSHA_BANDHAN = new Date('2026-08-29T00:00:00+05:30');
 
@@ -114,9 +113,6 @@ function CountdownBlock({ label, value }: { label: string; value: number }) {
 export function Hero() {
   const countdown = useCountdown(RAKSHA_BANDHAN);
   const flagship = PRODUCTS[0];
-  const discount = flagship.originalPrice
-    ? Math.round((1 - flagship.price / flagship.originalPrice) * 100)
-    : 0;
 
   const fadeUp = useMemo(
     () => ({
@@ -243,11 +239,6 @@ export function Hero() {
                   className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-circuit-900/78 via-circuit-900/8 to-transparent" />
-                {discount > 0 && (
-                  <div className="absolute left-4 top-4 rounded-sm bg-vermillion-500 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-white shadow-vermillion-glow">
-                    Save {discount}%
-                  </div>
-                )}
               </div>
 
               <div className="grid gap-4 p-4 sm:grid-cols-[1fr_auto] sm:items-end sm:p-5">
@@ -262,17 +253,7 @@ export function Hero() {
                     {flagship.description.short}
                   </p>
                 </div>
-                <div className="flex items-center justify-between gap-4 sm:flex-col sm:items-end">
-                  <div className="text-left sm:text-right">
-                    <p className="font-mono text-xl font-semibold text-ivory">
-                      {formatINR(flagship.price)}
-                    </p>
-                    {flagship.originalPrice && (
-                      <p className="font-mono text-xs text-ivory/40 line-through">
-                        {formatINR(flagship.originalPrice)}
-                      </p>
-                    )}
-                  </div>
+                <div className="flex items-center justify-end sm:flex-col sm:items-end mt-4 sm:mt-0">
                   <AddToCartButton product={flagship} size="sm" />
                 </div>
               </div>

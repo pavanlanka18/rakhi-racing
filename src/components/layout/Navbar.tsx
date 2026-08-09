@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { ShoppingBag, User, Menu } from 'lucide-react';
+import { ShoppingBag, Menu } from 'lucide-react';
 import { useCart } from '@/hooks/useCart';
 import { useState } from 'react';
 import { MobileMenu } from './MobileMenu';
@@ -59,14 +59,6 @@ export function Navbar() {
 
           {/* ── Right cluster ──────────────────────────────────────── */}
           <div className="flex items-center gap-2">
-            <Link
-              href="/account"
-              aria-label="Account"
-              className="hidden sm:inline-flex p-2 text-ivory/70 hover:text-ivory transition focus-ring rounded-sm"
-            >
-              <User className="w-4 h-4" />
-            </Link>
-
             <button
               type="button"
               onClick={openCart}
