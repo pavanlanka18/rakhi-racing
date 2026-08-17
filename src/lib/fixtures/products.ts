@@ -1,5 +1,6 @@
 import type { Product } from '@/types';
 
+<<<<<<< HEAD
 // Helper: use Google's lh3 CDN for direct image access (no redirect/CORS issues)
 function gdriveImg(fileId: string): string {
   return `https://lh3.googleusercontent.com/d/${fileId}`;
@@ -7,6 +8,12 @@ function gdriveImg(fileId: string): string {
 
 // ——— Fantasy Cars — ₹499 each (8 items) —————————————————————————————————————————————
 // Folder: https://drive.google.com/drive/folders/17x2w1Q_KCu4RpQ9QY5I-HPmoSBMwT9UH
+=======
+const DRIVE_CLASSIC_NUMBERS = [3, 24, 9, 49, 17, 48, 35, 45, 31, 18, 46, 16, 37, 47, 14, 7, 4, 38, 30, 19, 33, 26, 15, 21];
+
+const FIRST_EDIT_PRODUCTS: Product[] = DRIVE_CLASSIC_NUMBERS.map((number, index) => {
+  const padded = String(number).padStart(2, '0');
+>>>>>>> 0560a76f3edc980ac58582a77fd42d962e909ed4
 
 const FANTASY_FILE_IDS = [
   '1EA4B_Y0OShX4LdwVMinG4w5J_Sf_cfNw',
@@ -23,6 +30,7 @@ const FANTASY_PRODUCTS: Product[] = FANTASY_FILE_IDS.map((fileId, index) => {
   const num = index + 1;
   const padded = String(num).padStart(2, '0');
   return {
+<<<<<<< HEAD
     id: `p_fantasy_${padded}`,
     slug: `fantasy-rakhi-${padded}`,
     name: `Hot Wheels Fantasy Rakhi ${padded}`,
@@ -41,6 +49,27 @@ const FANTASY_PRODUCTS: Product[] = FANTASY_FILE_IDS.map((fileId, index) => {
     specs: {
       thread: 'Hand-tied festive thread',
       metal: 'Hot Wheels die-cast car',
+=======
+    id: `p_first_edit_${padded}`,
+    slug: `first-edit-rakhi-${padded}`,
+    name: `Classic Car Rakhi ${String(index + 1).padStart(2, '0')}`,
+    liveryNumber: 100 + number,
+    editionSize: 50,
+    editionNumber: index + 1,
+    price: 499,
+    originalPrice: 649,
+    currency: 'INR',
+    description: {
+      short: 'Classic car rakhi from the Drive photo collection.',
+      long: 'A classic car rakhi from the shared Drive photo collection, ready for Raksha Bandhan gifting. Each item uses the exact product photo shown in the collection.',
+    },
+    images: [`/images/products/1st-edit/rakhi-edit-${padded}.png`],
+    category: 'muscle',
+    tags: ['classic', 'hot-wheels', 'rakhi'],
+    specs: {
+      thread: 'Hand-tied festive thread',
+      metal: 'Classic die-cast car',
+>>>>>>> 0560a76f3edc980ac58582a77fd42d962e909ed4
       charm: 'As shown in product photo',
       weight: 'Varies by design',
       dimensions: 'Standard rakhi size',
@@ -50,6 +79,7 @@ const FANTASY_PRODUCTS: Product[] = FANTASY_FILE_IDS.map((fileId, index) => {
   };
 });
 
+<<<<<<< HEAD
 // â”€â”€â”€ F1 Cars â€” ₹699 each (6 items) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Folder: https://drive.google.com/drive/folders/1BdmovDbFetk_CnWDTeda3jLY5YeyyW5p
 
@@ -60,6 +90,172 @@ const F1_FILE_IDS = [
   '1iIZQ95FH5X1P1L-qLKhODh9NdIQ_rnrN',
   '1rz0yT66RVMoLma21nNlhm0cotlqu2NPk',
   '1l0xSnTZSKa0GVM58Xr47IUul2b7hL_lv',
+=======
+export const PRODUCTS: Product[] = [
+  {
+    id: 'p_f1_001',
+    slug: 'oracle-red-bull-racing-f1-rakhi',
+    name: 'Oracle Red Bull Racing Formula 1 Car Rakhi',
+    liveryNumber: 1,
+    editionSize: 500,
+    editionNumber: 1,
+    price: 699,
+    originalPrice: 899,
+    currency: 'INR',
+    description: {
+      short: 'Celebrate Formula 1 with the iconic Oracle Red Bull Racing livery.',
+      long: 'Oracle Red Bull Racing Formula 1 car in signature navy and red livery. Comes with a beautifully handcrafted rakhi tied around the front wheel hub — a symbol of protection and love for the racing enthusiast in your life.',
+    },
+    images: ['/images/products/red-bull-f1.jpg'],
+    category: 'f1',
+    tags: ['f1', 'red-bull', 'oracle', 'rakhi'],
+    specs: {
+      thread: 'Hand-tied festive thread',
+      metal: 'Formula 1 die-cast car, navy-red livery',
+      charm: 'As shown in product photo',
+      weight: '42 g',
+      dimensions: '68 × 26 × 38 mm',
+    },
+    inventory: 1,
+    isActive: true,
+  },
+  {
+    id: 'p_f1_002',
+    slug: 'mercedes-amg-petronas-f1-rakhi',
+    name: 'Mercedes-AMG Petronas Formula 1 Car Rakhi',
+    liveryNumber: 2,
+    editionSize: 500,
+    editionNumber: 2,
+    price: 699,
+    originalPrice: 899,
+    currency: 'INR',
+    description: {
+      short: 'Premium Mercedes-AMG Petronas Formula 1 car rakhi.',
+      long: 'The Mercedes-AMG Petronas F1 die-cast in iconic silver and teal livery. The rakhi is hand-tied around the front wheel hub — a stunning Raksha Bandhan gift for the Formula 1 fan in your family.',
+    },
+    images: ['/images/products/mercedes-amg-f1.jpg'],
+    category: 'f1',
+    tags: ['f1', 'mercedes', 'amg', 'petronas', 'rakhi'],
+    specs: {
+      thread: 'Hand-tied festive thread',
+      metal: 'Formula 1 die-cast car, silver-teal livery',
+      charm: 'As shown in product photo',
+      weight: '42 g',
+      dimensions: '68 × 26 × 38 mm',
+    },
+    inventory: 1,
+    isActive: true,
+  },
+  {
+    id: 'p_f1_003',
+    slug: 'bwt-alpine-f1-rakhi',
+    name: 'BWT Alpine Formula 1 Car Rakhi',
+    liveryNumber: 3,
+    editionSize: 500,
+    editionNumber: 3,
+    price: 699,
+    originalPrice: 899,
+    currency: 'INR',
+    description: {
+      short: 'Premium BWT Alpine Formula 1 car rakhi.',
+      long: 'Stand-out pink and blue BWT Alpine F1 livery with the most vibrant rakhi in the collection. Hand-tied around the front hub for a truly special Raksha Bandhan gift.',
+    },
+    images: ['/images/products/alpine-f1.jpg'],
+    category: 'f1',
+    tags: ['f1', 'alpine', 'bwt', 'pink', 'rakhi'],
+    specs: {
+      thread: 'Hand-tied festive thread',
+      metal: 'Formula 1 die-cast car, pink-blue livery',
+      charm: 'As shown in product photo',
+      weight: '40 g',
+      dimensions: '66 × 25 × 37 mm',
+    },
+    inventory: 1,
+    isActive: true,
+  },
+  {
+    id: 'p_f1_004',
+    slug: 'maserati-formula-e-race-car-rakhi',
+    name: 'Maserati Formula E Race Car Rakhi',
+    liveryNumber: 4,
+    editionSize: 500,
+    editionNumber: 4,
+    price: 699,
+    originalPrice: 899,
+    currency: 'INR',
+    description: {
+      short: 'Handcrafted racing-inspired Maserati Formula E rakhi.',
+      long: 'The Maserati Formula E race car in sleek electric livery, paired with a beautiful handcrafted rakhi. A unique and premium Raksha Bandhan gift for the racing fan who loves cutting-edge motorsport.',
+    },
+    images: ['/images/products/maserati-formula-e.jpg'],
+    category: 'f1',
+    tags: ['f1', 'maserati', 'formula-e', 'electric', 'rakhi'],
+    specs: {
+      thread: 'Hand-tied festive thread',
+      metal: 'Formula E die-cast car, Maserati livery',
+      charm: 'As shown in product photo',
+      weight: '40 g',
+      dimensions: '66 × 25 × 37 mm',
+    },
+    inventory: 1,
+    isActive: true,
+  },
+  {
+    id: 'p_f1_005',
+    slug: 'haas-f1-rakhi',
+    name: 'Haas Formula 1 Car Rakhi',
+    liveryNumber: 5,
+    editionSize: 500,
+    editionNumber: 5,
+    price: 699,
+    originalPrice: 899,
+    currency: 'INR',
+    description: {
+      short: 'Premium handcrafted Haas Formula 1 car rakhi.',
+      long: 'The Haas F1 Team die-cast in white and red livery. Paired with a handcrafted rakhi for the boldest fan in your circle. A standout Raksha Bandhan gift that ships in a premium gift box.',
+    },
+    images: ['/images/products/haas-f1.jpg'],
+    category: 'f1',
+    tags: ['f1', 'haas', 'white', 'red', 'rakhi'],
+    specs: {
+      thread: 'Hand-tied festive thread',
+      metal: 'Formula 1 die-cast car, white-red livery',
+      charm: 'As shown in product photo',
+      weight: '40 g',
+      dimensions: '66 × 25 × 37 mm',
+    },
+    inventory: 1,
+    isActive: true,
+  },
+  {
+    id: 'p_f1_006',
+    slug: 'formula-e-electric-race-car-rakhi',
+    name: 'Formula E Electric Race Car Rakhi',
+    liveryNumber: 6,
+    editionSize: 500,
+    editionNumber: 6,
+    price: 699,
+    originalPrice: 899,
+    currency: 'INR',
+    description: {
+      short: 'Handcrafted racing-inspired Formula E electric car rakhi.',
+      long: 'A sleek Formula E electric race car die-cast with a beautiful handcrafted rakhi tied around the front wheel hub. Perfect for the motorsport enthusiast who loves the future of racing.',
+    },
+    images: ['/images/products/formula-e.jpg'],
+    category: 'f1',
+    tags: ['f1', 'formula-e', 'electric', 'rakhi'],
+    specs: {
+      thread: 'Hand-tied festive thread',
+      metal: 'Formula E die-cast car, electric livery',
+      charm: 'As shown in product photo',
+      weight: '40 g',
+      dimensions: '66 × 25 × 37 mm',
+    },
+    inventory: 1,
+    isActive: true,
+  },
+  ...FIRST_EDIT_PRODUCTS,
+>>>>>>> 0560a76f3edc980ac58582a77fd42d962e909ed4
 ];
 
 const F1_NAMES = [
