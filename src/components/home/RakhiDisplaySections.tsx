@@ -2,7 +2,7 @@ import { PRODUCTS } from '@/lib/fixtures/products';
 import { ProductCard } from '@/components/product/ProductCard';
 
 export function RakhiDisplaySections() {
-  const f1Cars = PRODUCTS.filter((p) => p.id.startsWith('p_first_edit_') && p.category === 'f1');
+  const f1Cars = PRODUCTS.filter((p) => p.category === 'f1');
   const muscleCars = PRODUCTS.filter((p) => p.id.startsWith('p_first_edit_') && p.category === 'muscle');
 
   return (
