@@ -211,19 +211,7 @@ function ShopContent() {
             Die-cast legends with the rakhi thread tied around the front wheel hub.
             Handcrafted gifts for every racing soul.
           </p>
-          <div className="mt-10 flex flex-wrap items-center gap-8">
-            {[
-              { label: 'Fantasy',  value: '₹499' },
-              { label: 'F1',       value: '₹699' },
-              { label: 'Premium',  value: '₹699' },
-              { label: 'Sports',   value: '₹599' },
-            ].map(({ label, value }) => (
-              <div key={label} className="flex flex-col">
-                <span className="font-display text-2xl text-mauli-400 font-bold">{value}</span>
-                <span className="font-mono text-[10px] uppercase tracking-widest text-ivory/50">{label}</span>
-              </div>
-            ))}
-          </div>
+
         </div>
       </div>
 
@@ -239,7 +227,7 @@ function ShopContent() {
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search rakhi, F1, fantasyâ€¦"
+                placeholder="Search rakhi, F1, fantasy..."
                 className="w-full bg-circuit-800 border border-circuit-600 rounded-lg pl-9 pr-9 py-2.5 text-sm text-ivory placeholder:text-ivory/30 focus:outline-none focus:border-mauli-500 transition"
               />
               {search && (
