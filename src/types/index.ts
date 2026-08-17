@@ -25,7 +25,7 @@ export type Product = {
     long: string;
   };
   images: string[];
-  category: 'f1' | 'muscle' | 'sports' | 'adventure' | 'limited' | 'bond' | 'first-edit' | 'sport' | 'cafe' | 'classic' | 'street' | 'tour';
+  category: 'f1' | 'fantasy' | 'premium' | 'sports' | 'muscle' | 'adventure' | 'limited' | 'bond' | 'first-edit' | 'sport' | 'cafe' | 'classic' | 'street' | 'tour';
   originalPrice?: number;
   isSoldOut?: boolean;
   tags: string[];

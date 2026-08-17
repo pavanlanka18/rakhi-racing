@@ -29,7 +29,9 @@ const nextConfig = {
     unoptimized: true,
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },
-      { protocol: 'http', hostname: 'localhost' },
+      { protocol: 'http',  hostname: 'localhost' },
+      { protocol: 'https', hostname: 'drive.google.com' },
+      { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
     ],
   },
 

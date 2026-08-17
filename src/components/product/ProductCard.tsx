@@ -11,9 +11,11 @@ type Props = {
 };
 
 const CATEGORY_LABELS: Record<string, string> = {
-  f1: 'F1 Edition',
+  fantasy: 'Fantasy',
+  f1: 'F1',
+  premium: 'Premium',
+  sports: 'Sports',
   muscle: 'Muscle Car',
-  sports: 'Sports Car',
   adventure: 'Adventure',
   limited: 'Limited',
   bond: 'Bond Rakhi',
@@ -26,12 +28,14 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
-  f1: 'bg-blue-600/20 text-blue-300 border-blue-500/30',
-  muscle: 'bg-vermillion-500/20 text-vermillion-400 border-vermillion-500/30',
-  sports: 'bg-vermillion-500/20 text-vermillion-400 border-vermillion-500/30',
+  fantasy: 'bg-purple-600/20 text-purple-300 border-purple-500/30',
+  f1:      'bg-red-600/20 text-red-300 border-red-500/30',
+  premium: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+  sports:  'bg-cyan-600/20 text-cyan-300 border-cyan-500/30',
+  muscle:  'bg-vermillion-500/20 text-vermillion-400 border-vermillion-500/30',
   adventure: 'bg-green-600/20 text-green-300 border-green-500/30',
   limited: 'bg-mauli-500/20 text-mauli-400 border-mauli-500/30',
-  bond: 'bg-purple-600/20 text-purple-300 border-purple-500/30',
+  bond:    'bg-purple-600/20 text-purple-300 border-purple-500/30',
   'first-edit': 'bg-mauli-500/20 text-mauli-400 border-mauli-500/30',
 };
 

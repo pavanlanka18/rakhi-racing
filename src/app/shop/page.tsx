@@ -4,13 +4,15 @@ import { useState, useMemo, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { PRODUCTS } from '@/lib/fixtures/products';
 import { ProductCard } from '@/components/product/ProductCard';
-import { Search, X, ChevronDown, Mail, Trophy, Car } from 'lucide-react';
+import { Search, X, ChevronDown, Mail, Trophy, Car, Star, Zap } from 'lucide-react';
 
-// ─── Tab definitions ─────────────────────────────────────────────────────────
+// â”€â”€â”€ Tab definitions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const SECTION_TABS = [
   { value: 'all',     label: 'All Products' },
-  { value: 'f1',      label: 'F1 Cars'     },
-  { value: 'classic', label: 'Classic'      },
+  { value: 'fantasy', label: 'Fantasy'      },
+  { value: 'f1',      label: 'F1 Cars'      },
+  { value: 'premium', label: 'Premium'      },
+  { value: 'sports',  label: 'Sports'       },
 ] as const;
 
 type SectionValue = (typeof SECTION_TABS)[number]['value'];
@@ -19,29 +21,19 @@ const SORT_OPTIONS = [
   { value: 'featured',   label: 'Featured' },
   { value: 'price-asc',  label: 'Price: Low to High' },
   { value: 'price-desc', label: 'Price: High to Low' },
-  { value: 'discount',   label: 'Biggest Discount' },
 ];
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
-// F1 section: only the 5 real named F1 team die-casts (no first-edit products)
-const isRealF1  = (p: (typeof PRODUCTS)[number]) => p.category === 'f1' && !p.id.startsWith('p_first_edit_');
-// Classic: any product whose category is NOT 'f1' — covers sports, adventure,
-// muscle, bond, limited, and first-edit Hot Wheels Fantasy (category='muscle').
-// First-edit F1 cars (category='f1') are correctly excluded by this rule.
-const isClassic = (p: (typeof PRODUCTS)[number]) => p.category !== 'f1';
+// â”€â”€â”€ Category filters â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+const isFantasy = (p: (typeof PRODUCTS)[number]) => p.category === 'fantasy';
+const isF1      = (p: (typeof PRODUCTS)[number]) => p.category === 'f1';
+const isPremium = (p: (typeof PRODUCTS)[number]) => p.category === 'premium';
+const isSports  = (p: (typeof PRODUCTS)[number]) => p.category === 'sports';
 
 function applySort(list: typeof PRODUCTS, sort: string): typeof PRODUCTS {
   const copy = [...list];
   switch (sort) {
     case 'price-asc':  copy.sort((a, b) => a.price - b.price); break;
     case 'price-desc': copy.sort((a, b) => b.price - a.price); break;
-    case 'discount':
-      copy.sort((a, b) => {
-        const da = a.originalPrice ? 1 - a.price / a.originalPrice : 0;
-        const db = b.originalPrice ? 1 - b.price / b.originalPrice : 0;
-        return db - da;
-      });
-      break;
     default: break;
   }
   return copy;
@@ -58,12 +50,14 @@ function applySearch(list: typeof PRODUCTS, q: string): typeof PRODUCTS {
   );
 }
 
-// ─── Section Header ───────────────────────────────────────────────────────────
-type Variant = 'f1' | 'classic';
+// â”€â”€â”€ Section Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+type Variant = 'fantasy' | 'f1' | 'premium' | 'sports';
 
 const VARIANT_STYLES: Record<Variant, { border: string; iconBg: string; title: string; counter: string }> = {
-  'f1':      { border: 'border-red-500/30',   iconBg: 'bg-red-500/15 border-red-500/30',    title: 'text-red-400',   counter: 'text-red-500/25'   },
-  'classic': { border: 'border-amber-500/30', iconBg: 'bg-amber-500/15 border-amber-500/30', title: 'text-amber-400', counter: 'text-amber-500/25' },
+  'fantasy': { border: 'border-purple-500/30', iconBg: 'bg-purple-500/15 border-purple-500/30', title: 'text-purple-400', counter: 'text-purple-500/25' },
+  'f1':      { border: 'border-red-500/30',    iconBg: 'bg-red-500/15 border-red-500/30',       title: 'text-red-400',    counter: 'text-red-500/25'    },
+  'premium': { border: 'border-amber-500/30',  iconBg: 'bg-amber-500/15 border-amber-500/30',   title: 'text-amber-400',  counter: 'text-amber-500/25'  },
+  'sports':  { border: 'border-cyan-500/30',   iconBg: 'bg-cyan-500/15 border-cyan-500/30',     title: 'text-cyan-400',   counter: 'text-cyan-500/25'   },
 };
 
 function SectionHeader({
@@ -96,40 +90,24 @@ function SectionHeader({
   );
 }
 
-// ─── Pricing Banner ───────────────────────────────────────────────────────────
-function PricingBadge({
-  label, original, sale, saving, percent, limited, variant,
-}: {
-  label: string; original: string; sale: string;
-  saving: string; percent: string; limited?: boolean;
-  variant: Variant;
-}) {
-  const styles: Record<Variant, { bg: string; accent: string; saveBg: string }> = {
-    'f1':      { bg: 'bg-red-500/10 border-red-500/20',    accent: 'text-red-400',   saveBg: 'bg-red-500/20 text-red-300'    },
-    'classic': { bg: 'bg-amber-500/10 border-amber-500/20', accent: 'text-amber-400', saveBg: 'bg-amber-500/20 text-amber-300' },
+// â”€â”€â”€ Price Badge (no discount) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function PriceBadge({ label, price, variant }: { label: string; price: string; variant: Variant }) {
+  const styles: Record<Variant, { bg: string; accent: string }> = {
+    'fantasy': { bg: 'bg-purple-500/10 border-purple-500/20', accent: 'text-purple-400' },
+    'f1':      { bg: 'bg-red-500/10 border-red-500/20',       accent: 'text-red-400'    },
+    'premium': { bg: 'bg-amber-500/10 border-amber-500/20',   accent: 'text-amber-400'  },
+    'sports':  { bg: 'bg-cyan-500/10 border-cyan-500/20',     accent: 'text-cyan-400'   },
   };
-  const { bg, accent, saveBg } = styles[variant];
-
+  const { bg, accent } = styles[variant];
   return (
     <div className={`inline-flex flex-wrap items-center gap-2 px-4 py-2.5 rounded-xl border ${bg}`}>
       <span className={`font-mono text-xs uppercase tracking-widest ${accent}`}>{label}</span>
-      <span className="font-display text-sm text-ivory">
-        <span className="line-through text-ivory/40 mr-1.5">{original}</span>
-        <span className={`font-bold ${accent}`}>{sale}</span>
-      </span>
-      <span className={`text-[10px] font-mono px-2 py-0.5 rounded ${saveBg}`}>
-        Save {saving} · {percent} OFF
-      </span>
-      {limited && (
-        <span className="text-[10px] font-mono bg-red-600/25 text-red-300 px-2 py-0.5 rounded animate-pulse">
-          Limited Time Offer
-        </span>
-      )}
+      <span className={`font-display text-sm font-bold ${accent}`}>{price}</span>
     </div>
   );
 }
 
-// ─── Product Grid ─────────────────────────────────────────────────────────────
+// â”€â”€â”€ Product Grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function ProductGrid({ products }: { products: typeof PRODUCTS }) {
   if (!products.length) return null;
   return (
@@ -139,7 +117,7 @@ function ProductGrid({ products }: { products: typeof PRODUCTS }) {
   );
 }
 
-// ─── Main Page ────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Main Page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function ShopContent() {
   const searchParams = useSearchParams();
   const [search,        setSearch]        = useState('');
@@ -149,41 +127,72 @@ function ShopContent() {
   // Sync section from URL ?cat=
   useEffect(() => {
     const cat = searchParams.get('cat');
-    if (cat === 'f1')      setActiveSection('f1');
-    else if (cat === 'classic') setActiveSection('classic');
+    if      (cat === 'fantasy') setActiveSection('fantasy');
+    else if (cat === 'f1')      setActiveSection('f1');
+    else if (cat === 'premium') setActiveSection('premium');
+    else if (cat === 'sports')  setActiveSection('sports');
     else setActiveSection('all');
   }, [searchParams]);
 
-  // F1: only real F1 team cars. Classic: everything else (incl. first-edit photos)
-  const f1Products      = useMemo(
-    () => applySort(applySearch(PRODUCTS.filter(isRealF1),  search), sort),
+  const fantasyProducts = useMemo(
+    () => applySort(applySearch(PRODUCTS.filter(isFantasy), search), sort),
     [search, sort]
   );
-  const classicProducts = useMemo(
-    () => applySort(applySearch(PRODUCTS.filter(isClassic), search), sort),
+  const f1Products = useMemo(
+    () => applySort(applySearch(PRODUCTS.filter(isF1), search), sort),
+    [search, sort]
+  );
+  const premiumProducts = useMemo(
+    () => applySort(applySearch(PRODUCTS.filter(isPremium), search), sort),
+    [search, sort]
+  );
+  const sportsProducts = useMemo(
+    () => applySort(applySearch(PRODUCTS.filter(isSports), search), sort),
     [search, sort]
   );
 
   const totalVisible = useMemo(() => {
+    if (activeSection === 'fantasy') return fantasyProducts.length;
     if (activeSection === 'f1')      return f1Products.length;
-    if (activeSection === 'classic') return classicProducts.length;
-    return f1Products.length + classicProducts.length;
-  }, [activeSection, f1Products.length, classicProducts.length]);
+    if (activeSection === 'premium') return premiumProducts.length;
+    if (activeSection === 'sports')  return sportsProducts.length;
+    return fantasyProducts.length + f1Products.length + premiumProducts.length + sportsProducts.length;
+  }, [activeSection, fantasyProducts.length, f1Products.length, premiumProducts.length, sportsProducts.length]);
 
+  const showFantasy = (activeSection === 'all' || activeSection === 'fantasy') && fantasyProducts.length > 0;
   const showF1      = (activeSection === 'all' || activeSection === 'f1')      && f1Products.length > 0;
-  const showClassic = (activeSection === 'all' || activeSection === 'classic') && classicProducts.length > 0;
+  const showPremium = (activeSection === 'all' || activeSection === 'premium') && premiumProducts.length > 0;
+  const showSports  = (activeSection === 'all' || activeSection === 'sports')  && sportsProducts.length > 0;
   const showEmpty   = totalVisible === 0;
 
   // Tab counts
   const tabCounts: Record<SectionValue, number> = {
-    'all':     f1Products.length + classicProducts.length,
+    'all':     fantasyProducts.length + f1Products.length + premiumProducts.length + sportsProducts.length,
+    'fantasy': fantasyProducts.length,
     'f1':      f1Products.length,
-    'classic': classicProducts.length,
+    'premium': premiumProducts.length,
+    'sports':  sportsProducts.length,
+  };
+
+  // Tab styles
+  const tabActiveStyles: Record<SectionValue, string> = {
+    'all':     'bg-mauli-500 border-mauli-500 text-circuit-900 shadow-lg shadow-mauli-500/30',
+    'fantasy': 'bg-purple-500 border-purple-500 text-white shadow-lg shadow-purple-500/30',
+    'f1':      'bg-red-500 border-red-500 text-white shadow-lg shadow-red-500/30',
+    'premium': 'bg-amber-500 border-amber-500 text-circuit-900 shadow-lg shadow-amber-500/30',
+    'sports':  'bg-cyan-500 border-cyan-500 text-circuit-900 shadow-lg shadow-cyan-500/30',
+  };
+
+  const tabIcons: Partial<Record<SectionValue, React.ReactNode>> = {
+    'fantasy': <Star  className="w-3 h-3" />,
+    'f1':      <Trophy className="w-3 h-3" />,
+    'premium': <Zap   className="w-3 h-3" />,
+    'sports':  <Car   className="w-3 h-3" />,
   };
 
   return (
     <div className="min-h-screen bg-circuit-900">
-      {/* ── Hero ──────────────────────────────────────────────────────── */}
+      {/* â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="relative overflow-hidden border-b border-circuit-700">
         <div className="absolute inset-0 circuit-grid opacity-20 pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-b from-circuit-900/60 via-transparent to-circuit-900/80" />
@@ -202,12 +211,12 @@ function ShopContent() {
             Die-cast legends with the rakhi thread tied around the front wheel hub.
             Handcrafted gifts for every racing soul.
           </p>
-          <div className="mt-10 flex flex-wrap items-center gap-6">
+          <div className="mt-10 flex flex-wrap items-center gap-8">
             {[
-              { label: 'Products In Stock', value: `${PRODUCTS.filter(p => !p.isSoldOut).length}+` },
-              { label: 'Max Savings',       value: '65% OFF' },
-              { label: 'Free Shipping',     value: '₹999+' },
-              { label: 'Gift Ready',        value: '100%' },
+              { label: 'Fantasy',  value: '₹499' },
+              { label: 'F1',       value: '₹699' },
+              { label: 'Premium',  value: '₹699' },
+              { label: 'Sports',   value: '₹599' },
             ].map(({ label, value }) => (
               <div key={label} className="flex flex-col">
                 <span className="font-display text-2xl text-mauli-400 font-bold">{value}</span>
@@ -218,7 +227,7 @@ function ShopContent() {
         </div>
       </div>
 
-      {/* ── Sticky Filter Bar ─────────────────────────────────────────── */}
+      {/* â”€â”€ Sticky Filter Bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="sticky top-[72px] z-30 bg-circuit-900/95 backdrop-blur border-b border-circuit-700 shadow-lg">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
@@ -230,7 +239,7 @@ function ShopContent() {
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search rakhi, F1, Porsche…"
+                placeholder="Search rakhi, F1, fantasyâ€¦"
                 className="w-full bg-circuit-800 border border-circuit-600 rounded-lg pl-9 pr-9 py-2.5 text-sm text-ivory placeholder:text-ivory/30 focus:outline-none focus:border-mauli-500 transition"
               />
               {search && (
@@ -259,23 +268,13 @@ function ShopContent() {
             </div>
           </div>
 
-          {/* ── Section Tabs ──────────────────────────────────────────── */}
+          {/* â”€â”€ Section Tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
           <div className="mt-3 flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
             {SECTION_TABS.map((tab) => {
-              const count   = tabCounts[tab.value];
-              const active  = activeSection === tab.value;
-              const isF1Tab = tab.value === 'f1';
-              const isCls   = tab.value === 'classic';
-
-              const activeCls = isF1Tab
-                ? 'bg-red-500 border-red-500 text-white shadow-lg shadow-red-500/30'
-                : isCls
-                ? 'bg-amber-500 border-amber-500 text-circuit-900 shadow-lg shadow-amber-500/30'
-                : 'bg-mauli-500 border-mauli-500 text-circuit-900 shadow-lg shadow-mauli-500/30';
-
-              const badgeCls = active
-                ? (isF1Tab ? 'text-white/70' : 'text-circuit-900/70')
-                : 'text-ivory/30';
+              const count  = tabCounts[tab.value];
+              const active = activeSection === tab.value;
+              const activeCls   = tabActiveStyles[tab.value];
+              const badgeCls    = active ? 'text-current/70' : 'text-ivory/30';
 
               return (
                 <button
@@ -285,8 +284,7 @@ function ShopContent() {
                   className={`flex-shrink-0 flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-mono uppercase tracking-widest transition-all duration-200 border
                     ${active ? `font-bold ${activeCls}` : 'font-normal bg-transparent border-circuit-600 text-ivory/60 hover:border-mauli-500/50 hover:text-ivory'}`}
                 >
-                  {isF1Tab && <Trophy className="w-3 h-3" />}
-                  {isCls   && <Car    className="w-3 h-3" />}
+                  {tabIcons[tab.value]}
                   {tab.label}
                   <span className={`text-[9px] ${badgeCls}`}>{count}</span>
                 </button>
@@ -296,11 +294,11 @@ function ShopContent() {
         </div>
       </div>
 
-      {/* ── Products Area ────────────────────────────────────────────── */}
+      {/* â”€â”€ Products Area â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="max-w-7xl mx-auto px-6 py-12">
         {showEmpty ? (
           <div className="flex flex-col items-center justify-center py-32 text-center">
-            <div className="text-5xl mb-4">🏎️</div>
+            <div className="text-5xl mb-4">ðŸŽï¸</div>
             <h3 className="font-display text-2xl uppercase text-ivory/60">No results found</h3>
             <p className="mt-2 text-sm text-ivory/40 font-body">Try a different category or clear the search</p>
             <button
@@ -313,55 +311,78 @@ function ShopContent() {
         ) : (
           <div className="space-y-20">
 
-            {/* ── F1 Cars Section ─────────────────────────────────────── */}
+            {/* â”€â”€ Fantasy Section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+            {showFantasy && (
+              <section id="section-fantasy">
+                <SectionHeader
+                  icon={<Star className="w-5 h-5 text-purple-400" />}
+                  title="Fantasy Cars"
+                  subtitle={`Hot Wheels fantasy die-casts Â· ${fantasyProducts.length} available`}
+                  count={fantasyProducts.length}
+                  variant="fantasy"
+                />
+                <div className="mb-7 flex flex-wrap gap-3">
+                  <PriceBadge label="Fantasy Car Rakhi" price="₹499" variant="fantasy" />
+                </div>
+                <ProductGrid products={fantasyProducts} />
+              </section>
+            )}
+
+            {/* â”€â”€ F1 Section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
             {showF1 && (
               <section id="section-f1">
                 <SectionHeader
                   icon={<Trophy className="w-5 h-5 text-red-400" />}
                   title="F1 Cars"
-                  subtitle={`Formula 1 die-cast rakhi · ${f1Products.length} available`}
+                  subtitle={`Formula 1 die-cast rakhi Â· ${f1Products.length} available`}
                   count={f1Products.length}
                   variant="f1"
                 />
                 <div className="mb-7 flex flex-wrap gap-3">
-                  <PricingBadge
-                    label="Formula 1 Car Rakhi"
-                    original="₹899" sale="₹699"
-                    saving="₹200" percent="22"
-                    variant="f1"
-                  />
+                  <PriceBadge label="Formula 1 Car Rakhi" price="₹699" variant="f1" />
                 </div>
                 <ProductGrid products={f1Products} />
               </section>
             )}
 
-            {/* ── Classic Cars Section ─────────────────────────────────── */}
-            {showClassic && (
-              <section id="section-classic">
+            {/* â”€â”€ Premium Section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+            {showPremium && (
+              <section id="section-premium">
                 <SectionHeader
-                  icon={<Car className="w-5 h-5 text-amber-400" />}
-                  title="Classic Cars"
-                  subtitle={`Sports · Muscle · Adventure · Bond · 1st Edit Photos · ${classicProducts.length} available`}
-                  count={classicProducts.length}
-                  variant="classic"
+                  icon={<Zap className="w-5 h-5 text-amber-400" />}
+                  title="Premium Cars"
+                  subtitle={`Premium die-cast rakhi Â· ${premiumProducts.length} available`}
+                  count={premiumProducts.length}
+                  variant="premium"
                 />
                 <div className="mb-7 flex flex-wrap gap-3">
-                  <PricingBadge
-                    label="Classic &amp; Muscle Cars"
-                    original="₹749" sale="₹549"
-                    saving="₹200" percent="27"
-                    limited
-                    variant="classic"
-                  />
+                  <PriceBadge label="Premium Car Rakhi" price="₹699" variant="premium" />
                 </div>
-                <ProductGrid products={classicProducts} />
+                <ProductGrid products={premiumProducts} />
+              </section>
+            )}
+
+            {/* â”€â”€ Sports Section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+            {showSports && (
+              <section id="section-sports">
+                <SectionHeader
+                  icon={<Car className="w-5 h-5 text-cyan-400" />}
+                  title="Sports Cars"
+                  subtitle={`Sports & classic die-cast rakhi Â· ${sportsProducts.length} available`}
+                  count={sportsProducts.length}
+                  variant="sports"
+                />
+                <div className="mb-7 flex flex-wrap gap-3">
+                  <PriceBadge label="Sports Car Rakhi" price="₹599" variant="sports" />
+                </div>
+                <ProductGrid products={sportsProducts} />
               </section>
             )}
 
           </div>
         )}
 
-        {/* ── Bottom CTA ──────────────────────────────────────────────── */}
+        {/* â”€â”€ Bottom CTA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         {!showEmpty && (
           <div className="mt-16 text-center border-t border-circuit-700 pt-12">
             <p className="font-mono text-xs uppercase tracking-[0.25em] text-ivory/40 mb-4">
@@ -388,7 +409,7 @@ function ShopContent() {
               </a>
             </div>
             <p className="mt-4 text-xs text-ivory/30 font-body">
-              Pre-bookings open · Custom orders welcome
+              Pre-bookings open Â· Custom orders welcome
             </p>
           </div>
         )}
@@ -404,3 +425,4 @@ export default function ShopPage() {
     </Suspense>
   );
 }
+
